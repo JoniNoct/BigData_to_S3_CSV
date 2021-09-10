@@ -1,6 +1,7 @@
 import os
 import csv
 import xml.etree.ElementTree as ET
+from Helpers import fix_xml as fix
 
 def xml_surface_schema(root):
     columns = []
@@ -69,7 +70,8 @@ def bigdata_segmentation_csv(source, dest_folder, dest_file, subject_amount=1000
 
     # Basic file splitting work
     with open(source, "r", encoding=enc) as file:
-        upper_rows.append(file.readline())
+        file.readline()
+        #upper_rows.append(file.readline())
         upper_rows.append(file.readline())
         upper_rows = "".join(upper_rows)
 
@@ -79,6 +81,8 @@ def bigdata_segmentation_csv(source, dest_folder, dest_file, subject_amount=1000
                 counter += 1
             if counter == subject_amount:
                 xml_to_csv(upper_rows + "".join(content) + "</DATA>", "Output/Temp/" + dest_folder + "/" + dest_file + "_part_" + str(index) + ".csv", schema_path)
+                #fix.fix_xml(upper_rows + "".join(content) + "</DATA>")
+                #xml_to_csv(fix.fix_xml(upper_rows + "".join(content) + "</DATA>"), "Output/Temp/" + dest_folder + "/" + dest_file + "_part_" + str(index) + ".csv", schema_path)
                 content = []
                 counter = 0
                 index += 1
