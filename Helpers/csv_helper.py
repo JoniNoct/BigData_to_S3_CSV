@@ -64,6 +64,7 @@ def bigdata_segmentation_csv(source, dest_folder, dest_file, subject_amount=1000
     content = []
     counter = 0
     index = 1
+    test_counter = 1
     if not os.path.exists('Output/Temp/' + dest_folder):
         os.mkdir('Output/Temp/' + dest_folder)
     schema_path = "Resources/Schema/17.1-EX_XML_EDR_UO_FULL.txt" if dest_folder[0]=='U' else "Resources/Schema/17.2-EX_XML_EDR_FOP_FULL.txt"
@@ -80,10 +81,17 @@ def bigdata_segmentation_csv(source, dest_folder, dest_file, subject_amount=1000
             if line.find("</SUBJECT>") != -1:
                 counter += 1
             if counter == subject_amount:
-                xml_to_csv(upper_rows + "".join(content) + "</DATA>", "Output/Temp/" + dest_folder + "/" + dest_file + "_part_" + str(index) + ".csv", schema_path)
-                #fix.fix_xml(upper_rows + "".join(content) + "</DATA>")
+                if test_counter < 37:
+                    test_counter+=1
+                    content = []
+                    counter = 0
+                    index += 1
+                    continue
+                #xml_to_csv(upper_rows + "".join(content) + "</DATA>", "Output/Temp/" + dest_folder + "/" + dest_file + "_part_" + str(index) + ".csv", schema_path)
+                fix.fix_xml(upper_rows + "".join(content) + "</DATA>", dest_file, index)
                 #xml_to_csv(fix.fix_xml(upper_rows + "".join(content) + "</DATA>"), "Output/Temp/" + dest_folder + "/" + dest_file + "_part_" + str(index) + ".csv", schema_path)
                 content = []
                 counter = 0
                 index += 1
-        xml_to_csv(upper_rows + "".join(content) + "</DATA>", "Output/Temp/" + dest_folder + "/" + dest_file + "_part_" + str(index) + ".csv", schema_path)
+        fix.fix_xml(upper_rows + "".join(content) + "</DATA>", dest_file, index)
+        #xml_to_csv(upper_rows + "".join(content) + "</DATA>", "Output/Temp/" + dest_folder + "/" + dest_file + "_part_" + str(index) + ".csv", schema_path)

@@ -1,8 +1,9 @@
 import lxml.etree as ET
 
-def fix_xml(source):
+def fix_xml(source, filename='file', index=1):
     #parser = ET.XMLParser(encoding="windows-1251")
-    tree = ET.fromstring(source)
+    parser = ET.XMLParser(huge_tree = True, recover = True)
+    tree = ET.fromstring(source, parser)
 
     for element in tree.xpath('.//*[@CONTENT=""]'):
         element.getparent().remove(element)
@@ -20,12 +21,8 @@ def fix_xml(source):
             element.getparent().remove(element)
 
     # write out to new file
-    # return  ET.tostring(tree, encoding='windows-1251')
-
-    # write out to new file
-    newfile = "Output/Temp/UO_FULL/file.xml"
-    with open(newfile, 'w') as f:
-        f.write("<?xml version=\"1.0\" encoding=\"windows-1251\"?>\n")
-        f.write(ET.tostring(tree, pretty_print=True).decode())
-    print('Writing', newfile)
-
+    new_file = "Output/Temp/UO_FULL/"+filename+"_part_"+str(index)+".xml"
+    with open(new_file, 'wb') as f:
+        #f.write("<?xml version=\"1.0\" encoding=\"windows-1251\"?>\n".encode('windows-1251'))
+        f.write(ET.tostring(tree, encoding='windows-1251', pretty_print=True))
+    print('Writing', new_file)
