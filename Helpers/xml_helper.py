@@ -1,5 +1,6 @@
 import os
 
+
 # def has_letter(source):
 #     letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 #     for char in source:
@@ -106,14 +107,14 @@ def bigdata_segmentation_xml(source, dest_folder, dest_file, subject_amount=2000
 
     # Initializing variables
     upper_rows = []
-    content    = []
-    counter    = 0
-    index      = 1
+    content = []
+    counter = 0
+    index = 1
     if not os.path.exists('Output/Temp/' + dest_folder):
         os.mkdir('Output/Temp/' + dest_folder)
 
     # Basic file splitting work
-    with open(source,"r", encoding='cp1252') as file:
+    with open(source, "r", encoding='cp1252') as file:
         upper_rows.append(file.readline())
         upper_rows.append(file.readline())
         upper_rows = "".join(upper_rows)
@@ -121,14 +122,16 @@ def bigdata_segmentation_xml(source, dest_folder, dest_file, subject_amount=2000
         for line in file:
             content.append(line)
             if line.find("</SUBJECT>") != -1:
-                counter+=1
+                counter += 1
             if counter == subject_amount:
-                with open("Output/Temp/" + dest_folder + "/" + dest_file + "_part_"+str(index)+".xml", "w", encoding='cp1252') as output:
-                    output.write(upper_rows+"".join(content)+"</DATA>")
+                with open("Output/Temp/" + dest_folder + "/" + dest_file + "_part_" + str(index) + ".xml", "w",
+                          encoding='cp1252') as output:
+                    output.write(upper_rows + "".join(content) + "</DATA>")
                     output.close()
                 content = []
                 counter = 0
-                index  += 1
-        with open("Output/Temp/" + dest_folder + "/" + dest_file + "_part_"+str(index)+".xml", "w", encoding='cp1252') as output:
+                index += 1
+        with open("Output/Temp/" + dest_folder + "/" + dest_file + "_part_" + str(index) + ".xml", "w",
+                  encoding='cp1252') as output:
             output.write(upper_rows + "".join(content) + "</DATA>")
             output.close()
